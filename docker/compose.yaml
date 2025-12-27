@@ -1,0 +1,25 @@
+---
+services:
+  strapi:
+    build: ../strapi
+    env_file:
+      - ../strapi/.env
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+      JWT_SECRET: your_jwt_secret
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
