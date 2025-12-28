@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_product_meta_memo_pads",
+  "info": {
+    "displayName": "Memo pads"
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "enumeration",
+      "required": true,
+      "default": "white",
+      "enum": [
+        "white",
+        "colored"
+      ]
+    }
+  },
+  "config": {}
+}

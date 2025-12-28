@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_product_meta_boxes",
+  "info": {
+    "displayName": "Boxes"
+  },
+  "options": {},
+  "attributes": {
+    "fill_color": {
+      "type": "enumeration",
+      "required": true,
+      "default": "white",
+      "enum": [
+        "white",
+        "colored"
+      ]
+    },
+    "box_material": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "cardboard",
+        "plastic"
+      ]
+    },
+    "box_color": {
+      "type": "enumeration",
+      "required": true,
+      "default": "plain",
+      "enum": [
+        "plain",
+        "cloudy",
+        "black",
+        "white",
+        "red",
+        "blue",
+        "green",
+        "yellow"
+      ]
+    }
+  },
+  "config": {}
+}

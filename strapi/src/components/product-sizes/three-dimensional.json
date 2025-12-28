@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_product_sizes_three_dimensionals",
+  "info": {
+    "displayName": "Three dimensional"
+  },
+  "options": {},
+  "attributes": {
+    "width": {
+      "type": "integer",
+      "required": true
+    },
+    "height": {
+      "type": "integer",
+      "required": true
+    },
+    "depth": {
+      "type": "integer",
+      "required": true
+    },
+    "unit": {
+      "type": "enumeration",
+      "required": true,
+      "default": "cm",
+      "enum": [
+        "mm",
+        "cm",
+        "m"
+      ]
+    }
+  },
+  "config": {}
+}

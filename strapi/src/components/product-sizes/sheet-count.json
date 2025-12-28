@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_product_sizes_sheet_counts",
+  "info": {
+    "displayName": "Sheet count"
+  },
+  "options": {},
+  "attributes": {
+    "sheets": {
+      "type": "integer",
+      "required": true
+    },
+    "width": {
+      "type": "integer",
+      "required": true
+    },
+    "height": {
+      "type": "integer",
+      "required": true
+    },
+    "unit": {
+      "type": "enumeration",
+      "required": true,
+      "default": "cm",
+      "enum": [
+        "mm",
+        "cm",
+        "m"
+      ]
+    }
+  },
+  "config": {}
+}
