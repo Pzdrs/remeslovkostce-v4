@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CarouselComponent from "@/components/CarouselComponent.vue";
 import ContactComponent from "@/components/ContactComponent.vue";
 </script>
 
@@ -31,8 +30,6 @@ import ContactComponent from "@/components/ContactComponent.vue";
         </RouterLink>
       </div>
     </div>
-
-    <CarouselComponent/>
 
     <ContactComponent/>
   </section>

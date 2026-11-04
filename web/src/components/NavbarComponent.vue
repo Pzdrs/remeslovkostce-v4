@@ -8,10 +8,11 @@ const routes = router.getRoutes().filter(route => route.meta.navbar === true);
 <template>
   <nav class="sticky top-0 left-0 z-50 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-      <a href="https://flowbite.com/" class="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-8" alt="Flowbite Logo"/>
-        <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Flowbite</span>
-      </a>
+      <RouterLink :to="{name: 'home'}" active-class="" class="flex items-center">
+        <span class="whitespace-nowrap text-xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-2xl">
+          Řemeslo v kostce
+        </span>
+      </RouterLink>
       <div class="flex items-center md:order-2">
         <button type="button" data-dropdown-toggle="language-dropdown-menu"
                 class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white">
