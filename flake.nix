@@ -22,18 +22,14 @@
         ];
 
         frontendDeps = with pkgs; [
-          nodejs_24
-          pnpm_9
+          nodejs
+          pnpm
         ];
 
       in
       {
         devShells.default = pkgs.mkShell {
           buildInputs = backendDeps ++ frontendDeps;
-
-          shellHook = ''
-            alias npm="echo 'Use pnpm instead!'"
-          '';
         };
       }
     );

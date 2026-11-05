@@ -1,5 +1,5 @@
 import {reactive} from 'vue';
-import api from '@/axios';
+import api, {getMediaURL} from '@/axios';
 
 export const store = reactive({
     categories: [] as ProductCategory[],
@@ -31,7 +31,7 @@ function mediaItems(value: any): any[] {
 
 function mediaURL(value: any): string | null {
     const item = typeof value === 'string' ? value : content<any>(value);
-    return item?.url ?? null;
+    return getMediaURL(item?.url ?? null);
 }
 
 function asSize(components: any[] = []): ProductSize {

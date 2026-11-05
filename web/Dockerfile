@@ -1,11 +1,21 @@
-FROM node:lts-alpine as build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+FROM node:20-alpine AS builder
 
-FROM nginx:stable-alpine as production
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+RUN pnpm build
+
+
+FROM nginx:alpine-slim
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
 import ProductLink from "@/components/product/ProductLink.vue";
-import {getMediaURL} from "@/axios";
 import placeholderImage from "@/assets/images/product-placeholder.svg";
 
 defineProps({
@@ -23,7 +22,7 @@ function usePlaceholder(event: Event) {
 <template>
   <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 h-[390px] relative flex flex-col justify-between">
     <img class="min-h-[250px] w-full object-contain"
-         :src="product.thumbnail ? getMediaURL(product.thumbnail) : placeholderImage"
+         :src="product.thumbnail || placeholderImage"
          @error="usePlaceholder"
          alt="Product thumbnail"
     />

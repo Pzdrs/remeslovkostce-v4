@@ -15,12 +15,12 @@ let currentlyFiltering = computed(
 let loading = ref(true);
 let fetchFailed = ref(false);
 
-function getFilter(category: number) {
+function getFilter(category: number | string) {
   return {
     id: props.activeFilters?.length,
     type: 'category',
     label: getProductCategory(category)?.name,
-    callback: (product: Product) => product.category.id === category
+    callback: (product: Product) => String(product.category.id) === String(category)
   }
 }
 

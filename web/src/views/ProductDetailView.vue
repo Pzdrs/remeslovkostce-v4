@@ -6,13 +6,14 @@ import {fetchProduct} from "@/store";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 import ProductParameterTable from "@/components/ProductParameterTable.vue";
 import {getMediaURL} from "@/axios";
+import placeholderImage from "@/assets/images/product-placeholder.svg";
 
 const route = useRoute();
 const loading = ref(true);
 const fetchFailed = ref(false);
 const product = ref<Product | null>(null);
 const variants = ref<Product[]>([]);
-const thumbnailURL = computed(() => getMediaURL(product.value?.thumbnail));
+const thumbnailURL = computed(() => getMediaURL(product.value?.thumbnail) ?? placeholderImage);
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
 
@@ -61,7 +62,7 @@ onBeforeRouteUpdate(to => loadProduct(String(to.params.id)));
       <span class="sr-only">Loading...</span>
     </div>
 
-    <div v-if="contentReady" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div v-if="product && contentReady" class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <!--   Heading for mobile devices   -->
       <div class="md:hidden">
         <h4 class="mb-1 text-2xl font-extrabold dark:text-white md:mb-0">
@@ -81,11 +82,11 @@ onBeforeRouteUpdate(to => loadProduct(String(to.params.id)));
         <hr>
         <div class="grid grid-cols-5 gap-4">
           <a target="_blank" class="border-2 rounded p-2"
-             :href="getMediaURL(image.image)"
+             :href="getMediaURL(image.image) ?? placeholderImage"
              v-for="image in product.images" :key="image.id"
           >
             <img class="rounded-lg"
-                 :src="getMediaURL(image.image)"
+                 :src="getMediaURL(image.image) ?? placeholderImage"
                  alt="Alternate product image">
           </a>
         </div>
@@ -112,7 +113,7 @@ onBeforeRouteUpdate(to => loadProduct(String(to.params.id)));
             <RouterLink v-for="variant in variants" :key="variant.id"
                         :to="{ name: 'product-detail', params: { id: variant.id } }"
                         class="mb-4 flex rounded-lg border border-gray-200 p-2 dark:border-gray-700 dark:bg-gray-800">
-              <img class="h-12 w-12 rounded-lg object-cover" :src="getMediaURL(variant.thumbnail)" alt="">
+              <img class="h-12 w-12 rounded-lg object-cover" :src="getMediaURL(variant.thumbnail) ?? placeholderImage" alt="">
               <span class="my-auto ml-7 font-medium">{{ variant.displayName }}</span>
             </RouterLink>
           </div>

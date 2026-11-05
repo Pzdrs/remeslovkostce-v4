@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ProductLink from "@/components/product/ProductLink.vue";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
-import {getMediaURL} from "@/axios";
 import placeholderImage from "@/assets/images/product-placeholder.svg";
 
 defineProps({
@@ -24,7 +23,7 @@ function usePlaceholder(event: Event) {
       class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
     <th scope="row"
         class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white h-14">
-      <img :src="product.thumbnail ? getMediaURL(product.thumbnail) : placeholderImage"
+      <img :src="product.thumbnail || placeholderImage"
            @error="usePlaceholder"
            alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
