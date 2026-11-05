@@ -47,8 +47,9 @@
     },
     "product_category": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product-category.product-category"
+      "relation": "manyToOne",
+      "target": "api::product-category.product-category",
+      "inversedBy": "products"
     },
     "product_meta": {
       "type": "dynamiczone",
@@ -76,6 +77,12 @@
         "product-sizes.sheet-count"
       ],
       "required": true
+    },
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::variant.variant",
+      "inversedBy": "products"
     }
   }
 }

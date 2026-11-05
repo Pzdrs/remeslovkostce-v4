@@ -2,6 +2,7 @@
 import ProductLink from "@/components/product/ProductLink.vue";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 import {getMediaURL} from "@/axios";
+import placeholderImage from "@/assets/images/product-placeholder.svg";
 
 defineProps({
   products: {
@@ -9,6 +10,13 @@ defineProps({
     required: true
   }
 });
+
+function usePlaceholder(event: Event) {
+  const image = event.target as HTMLImageElement;
+  if (image.src !== new URL(placeholderImage, window.location.href).href) {
+    image.src = placeholderImage;
+  }
+}
 </script>
 
 <template>
@@ -16,7 +24,8 @@ defineProps({
       class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
     <th scope="row"
         class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white h-14">
-      <img :src="getMediaURL(product.thumbnail)"
+      <img :src="product.thumbnail ? getMediaURL(product.thumbnail) : placeholderImage"
+           @error="usePlaceholder"
            alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
     </th>

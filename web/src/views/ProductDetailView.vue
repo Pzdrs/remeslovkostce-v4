@@ -2,36 +2,37 @@
 import {Alert} from "flowbite-vue";
 import {computed, onMounted, ref} from "vue";
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
-import {deserializeProductDetail, fetchProduct} from "@/store";
+import {fetchProduct} from "@/store";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 import ProductParameterTable from "@/components/ProductParameterTable.vue";
-import ProductLink from "@/components/product/ProductLink.vue";
 import {getMediaURL} from "@/axios";
 
 const route = useRoute();
-let loading = ref(true);
-let fetchFailed = ref(false);
-let product: Product = null!;
+const loading = ref(true);
+const fetchFailed = ref(false);
+const product = ref<Product | null>(null);
 const variants = ref<Product[]>([]);
-const thumbnailURL = computed(() => getMediaURL(product.thumbnail));
+const thumbnailURL = computed(() => getMediaURL(product.value?.thumbnail));
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
 
-onMounted(() => {
-  fetchProduct(parseInt(route.params.id.toString()))
-      .then(res => {
-        product = deserializeProductDetail(res.data);
-        product.variants?.products.forEach(product => {
-          fetchProduct(product).then(res => {
-            variants.value.push(deserializeProductDetail(res.data))
-          });
-        })
-        loading.value = false;
-      })
-      .catch(() => {
-        fetchFailed.value = true;
-      });
-});
+async function loadProduct(id: string) {
+  loading.value = true;
+  fetchFailed.value = false;
+  try {
+    product.value = await fetchProduct(id);
+    const variantIds = product.value.variants?.products ?? [];
+    variants.value = (await Promise.all(variantIds.map(variantId => fetchProduct(variantId))))
+      .filter(variant => String(variant.id) !== String(product.value?.id));
+  } catch {
+    fetchFailed.value = true;
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(() => loadProduct(String(route.params.id)));
+onBeforeRouteUpdate(to => loadProduct(String(to.params.id)));
 </script>
 
 <template v-if="product !== null">
@@ -80,11 +81,11 @@ onMounted(() => {
         <hr>
         <div class="grid grid-cols-5 gap-4">
           <a target="_blank" class="border-2 rounded p-2"
-             :href="thumbnailURL"
+             :href="getMediaURL(image.image)"
              v-for="image in product.images" :key="image.id"
           >
             <img class="rounded-lg"
-                 :src="thumbnailURL"
+                 :src="getMediaURL(image.image)"
                  alt="Alternate product image">
           </a>
         </div>
@@ -107,19 +108,16 @@ onMounted(() => {
             <span v-else>Dalších <span class="font-bold">{{ variants.length }}</span> variant</span>
             z kategorie <span class="font-extrabold">{{ product.variants.name }}</span>
           </h5>
-
           <div class="mt-2 lg:w-3/4">
-            <div v-for="variant in variants" :key="variant.id"
-                 class="mb-4 rounded-lg border border-gray-200 p-2 dark:border-gray-700 dark:bg-gray-800 flex"
-            >
-              <img class="rounded-lg h-12 w-auto"
-                   :src="getMediaURL(variant.thumbnail)"
-                   alt="">
-              <ProductLink :product="variant" class="ml-7 my-auto font-medium"/>
-            </div>
+            <RouterLink v-for="variant in variants" :key="variant.id"
+                        :to="{ name: 'product-detail', params: { id: variant.id } }"
+                        class="mb-4 flex rounded-lg border border-gray-200 p-2 dark:border-gray-700 dark:bg-gray-800">
+              <img class="h-12 w-12 rounded-lg object-cover" :src="getMediaURL(variant.thumbnail)" alt="">
+              <span class="my-auto ml-7 font-medium">{{ variant.displayName }}</span>
+            </RouterLink>
           </div>
-
         </section>
+
       </section>
     </div>
   </div>

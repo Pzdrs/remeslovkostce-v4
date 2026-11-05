@@ -9,6 +9,7 @@ lerna-debug.log*
 
 
 .env.*.local
+*.env
 
 node_modules
 .DS_Store

@@ -1,12 +1,12 @@
 interface ProductCategory {
-    id: number,
+    id: number | string,
     name: string,
     description: string,
     products: number;
 }
 
 interface ProductImage {
-    id: number,
+    id: number | string,
     thumbnail: boolean,
     image: string;
 }
@@ -27,11 +27,11 @@ interface ProductColor {
 
 interface VariantGroup {
     name: string,
-    products: number[],
+    products: (number | string)[],
 }
 
 interface Product {
-    id: number,
+    id: number | string,
     category: ProductCategory,
     displayName: string,
     description: string,

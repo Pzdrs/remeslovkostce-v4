@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-const api = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL
-});
+const strapiURL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337/api';
 
-export function getMediaURL(media: any) {
-    return `${import.meta.env.VITE_BASE_DOMAIN}/media/${media}`;
+const api = axios.create({baseURL: strapiURL});
+
+export function getMediaURL(media: string | { url?: string } | null | undefined): string {
+    if (typeof media === 'object') media = media?.url ?? '';
+    if (!media) return '';
+    if (/^https?:\/\//i.test(media)) return media;
+
+    const origin = new URL(strapiURL, window.location.origin).origin;
+    return `${origin}${media.startsWith('/') ? media : `/${media}`}`;
 }
 
 export default api;
