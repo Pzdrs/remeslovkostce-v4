@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: remeslovkostce-web 
+  namespace: argocd
+spec:
+  project: remeslovkostce
+  source:
+    repoURL: ssh://git@gitlab.pycrs.cz:2424/remeslovkostce/remeslovkostce-v4.git
+    path: deploy
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: remeslovkostce
+  syncPolicy:
+    automated:
+      enabled: true
