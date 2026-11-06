@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: remeslovkostce
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: registry.gitlab.pycrs.cz/remeslovkostce/remeslovkostce-v4/web
+          # resources:
+          #   limits:
+          #     cpu: 500m
+          #     memory: 20Mi
+          #   requests:
+          #     cpu: 250m
+          #     memory: 10Mi
+          ports:
+            - containerPort: 80
+        - name: server
+          image: registry.gitlab.pycrs.cz/remeslovkostce/remeslovkostce-v4/strapi
+          # resources:
+          #   limits:
+          #     cpu: 500m
+          #     memory: 512Mi
+          #   requests:
+          #     cpu: 250m
+          #     memory: 256Mi
+          env:
+            - name: DATABASE_CLIENT
+              value: "postgres"
+            - name: DATABASE_HOST
+              value: "10.0.0.15"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: "remeslovkostce" 
+            - name: S3_BUCKET_NAME
+              value: "remeslovkostce"
+            - name: S3_BASE_URL
+              value: "https://s3.pycrs.cz/remeslovkostce"
+            - name: S3_ENDPOINT
+              value: "https://s3.pycrs.cz"
+          envFrom:
+            - secretRef:
+                name: system
+            - secretRef:
+                name: database
+            - secretRef:
+                name: s3
+          ports:
+            - containerPort: 1337

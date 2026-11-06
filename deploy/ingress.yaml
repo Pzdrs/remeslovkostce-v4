@@ -1,0 +1,51 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: frontend
+  namespace: remeslovkostce
+spec:
+  entryPoints: [https]
+  routes:
+    - kind: Rule
+      match: Host(`remeslovkostce.cz`)
+      priority: 100
+      services:
+        - kind: Service
+          name: web
+          port: frontend
+  tls: {}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: strapi 
+  namespace: remeslovkostce
+spec:
+  entryPoints: [https]
+  routes:
+    - kind: Rule
+      match: Host(`panel.remeslovkostce.cz`)
+      priority: 150
+      services:
+        - kind: Service
+          name: web
+          port: strapi 
+  tls: {}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: strapi-api
+  namespace: remeslovkostce
+spec:
+  entryPoints: [https]
+  routes:
+    - kind: Rule
+      match: Host(`remeslovkostce.cz`) && PathPrefix(`/api`)
+      priority: 200
+      services:
+        - kind: Service
+          name: web
+          port: strapi 
+  tls: {}

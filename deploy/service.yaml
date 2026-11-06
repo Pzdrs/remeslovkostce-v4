@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: remeslovkostce
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    name: frontend
+    targetPort: 80
+  - port: 1337
+    name: strapi
+    targetPort: 1337

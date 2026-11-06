@@ -77,7 +77,7 @@ export interface ProductSizesThreeDimensional extends Struct.ComponentSchema {
 }
 
 declare module '@strapi/strapi' {
-  export module Public {
+  export namespace Public {
     export interface ComponentSchemas {
       'product-meta.boxes': ProductMetaBoxes;
       'product-meta.flip-chart': ProductMetaFlipChart;
